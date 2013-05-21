@@ -3,7 +3,7 @@ var server = require('./server.js');
 
 //driver mongoose connect to mongodb database
 var mongoose = require('mongoose');
-mongoose.connect('localhost', 'letterpressdb');
+mongoose.connect('mongodb://wordbreak:wordbreak2013@widmore.mongohq.com:10000/wordbreakdb');
 //Define schema.
 var FriendSchema = new mongoose.Schema({
     username: String,
@@ -1082,7 +1082,7 @@ this.handlerResponeInvitedGame = function(clients, resData) {
                 var json2;
                 if (game.gamemode === 3) // ban pick
                 {
-                    game.turnof = -1; // xem ghi chú v�? giá trị này ở phần khai báo schema
+                    game.turnof = -1; // xem ghi chú v�? giá trị này ở phần khai báo schema
                     json2 = JSON.stringify({type: 'responseAccepted', data: game});
 
                     console.log("New game Ban Pick: " + json2);
@@ -2091,7 +2091,7 @@ this.handlerUserCompleteSearching = function(clients, data) {
         }
 
         //---Phần này dùng kiểm tra xem liệu cả 2 có hoàn tất searching hết chưa
-        // nếu hoàn tất rồi thì send v�? msg (ChangeStateToSearching) -> sẽ send ở cuối hàm save bên dưới
+        // nếu hoàn tất rồi thì send v�? msg (ChangeStateToSearching) -> sẽ send ở cuối hàm save bên dưới
         if (game.requestteduser.starttime === "complete" && game.accepteduser.starttime === "complete")
         {
             out("All complete");
@@ -2241,7 +2241,7 @@ this.handlerBothOfUserCompleteSearching = function(clients, data) {
         game.accepteduser.starttime = "complete";
 
         //---Phần này dùng kiểm tra xem liệu cả 2 có hoàn tất searching hết chưa
-        // nếu hoàn tất rồi thì send v�? msg (ChangeStateToSearching) -> sẽ send ở cuối hàm save bên dưới
+        // nếu hoàn tất rồi thì send v�? msg (ChangeStateToSearching) -> sẽ send ở cuối hàm save bên dưới
         out("All complete");
         game.gamestate = 4; // chuyển qua banpickstate
         game.turnof = 0; // sửa turn chỗ này
@@ -2302,7 +2302,7 @@ this.handlerSubmitBannedLetterPosition = function(clients, data) {
         game.lasttime = data.lasttime;
         game.playmatrix = data.playmatrix;
 
-        // biến dùng xác định xem là đã ban đủ kí tự của mỗi ngư�?i hay chưa.
+        // biến dùng xác định xem là đã ban đủ kí tự của mỗi ngư�?i hay chưa.
         // nếu đủ thì là GameCompleted
         var IsGameCompleted = false;
 
@@ -2310,20 +2310,20 @@ this.handlerSubmitBannedLetterPosition = function(clients, data) {
 
 
 
-        if (game.turnof === 0) // Turn = 0 tức là ngư�?i gửi là reqUser
+        if (game.turnof === 0) // Turn = 0 tức là ngư�?i gửi là reqUser
         {
             //------------
-            // phần này là tính toán để loại b�? từ của đối phương sau khi mình banpick
+            // phần này là tính toán để loại b�? từ của đối phương sau khi mình banpick
             //------------
             game.turnof = 1;
             game.requestteduser.banpicklist.push(data.letterposition); // đưa vị trí từ vào banpicklist	
 
-            // xét xem đi�?u kiện GameCompleted đã th�?a hay chưa				
+            // xét xem đi�?u kiện GameCompleted đã th�?a hay chưa				
             if (banpickLetterMax === game.requestteduser.banpicklist.length
                     && banpickLetterMax === game.accepteduser.banpicklist.length)
             {
                 game.gamestate = 2; // complete				
-                //tính điểm (d�?i thử ra bên ngoài)
+                //tính điểm (d�?i thử ra bên ngoài)
                 game.requestteduser.score = game.requestteduser.wordlist.length
                         - CountBannedWordsInList(game.requestteduser.wordlist, game.accepteduser.banpicklist);
                 game.accepteduser.score = game.accepteduser.wordlist.length
@@ -2402,15 +2402,15 @@ this.handlerSubmitBannedLetterPosition = function(clients, data) {
                 }
             });
         }
-        else // Turn = 1 tức là ngư�?i gửi là accUser
+        else // Turn = 1 tức là ngư�?i gửi là accUser
         {
             //------------
-            // phần này là tính toán để loại b�? từ của đối phương sau khi mình banpick
+            // phần này là tính toán để loại b�? từ của đối phương sau khi mình banpick
             //------------
             game.turnof = 0;
             game.accepteduser.banpicklist.push(data.letterposition); // đưa vị trí từ vào banpicklist
 
-            // xét xem đi�?u kiện GameCompleted đã th�?a hay chưa				
+            // xét xem đi�?u kiện GameCompleted đã th�?a hay chưa				
             if (banpickLetterMax === game.requestteduser.banpicklist.length
                     && banpickLetterMax === game.accepteduser.banpicklist.length)
             {
