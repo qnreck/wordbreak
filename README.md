@@ -1,4 +1,4 @@
-wordbreak 1
+wordbreak 11
 =========
 
 Wordbreak APp W8
